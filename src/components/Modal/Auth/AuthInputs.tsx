@@ -2,6 +2,8 @@ import { Flex } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
 import { useRecoilValue } from 'recoil';
 import { authModalState } from '../../../atoms/authModalAtom';
+import Login from './Login';
+import SignUp from './SignUp';
 
 type AuthInputsProps = {};
 
@@ -14,8 +16,8 @@ const AuthInputs: React.FC<AuthInputsProps> = () => {
   }
   const getInput = () =>
     ({
-      login: <h1>Login</h1>,
-      signup: <h1>Sing up</h1>,
+      login: <Login />,
+      signup: <SignUp />,
     } as Inputs);
 
   return (

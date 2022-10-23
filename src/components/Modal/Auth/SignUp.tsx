@@ -13,22 +13,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 import { authModalState } from '../../../atoms/authModalAtom';
-import { FormLoginValues } from '../../../types/auth.types';
-import { loginSchema } from '../../../utils/authSchema';
+import { FormSignUpValues } from '../../../types/auth.types';
+import { signUpSchema } from '../../../utils/authSchema';
 
-type LoginProps = {};
-
-const Login = ({}: LoginProps) => {
+const SignUp = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<FormLoginValues>({
-    resolver: yupResolver(loginSchema),
+  } = useForm<FormSignUpValues>({
+    resolver: yupResolver(signUpSchema),
   });
 
-  const onSubmit: SubmitHandler<FormLoginValues> = (values) => {
+  const onSubmit: SubmitHandler<FormSignUpValues> = (values) => {
     console.log(values);
   };
 
@@ -100,6 +98,39 @@ const Login = ({}: LoginProps) => {
           {errors.password && errors.password.message?.toString()}
         </FormErrorMessage>
       </FormControl>
+      <FormControl isInvalid={Boolean(errors.confirmPassword)} mb={2}>
+        <InputGroup>
+          {errors.confirmPassword && (
+            <InputRightElement
+              pointerEvents='none'
+              children={<WarningIcon color='red.500' />}
+            />
+          )}
+          <Input
+            id='confirmPassword'
+            placeholder='Confirmez le mot de passe'
+            type='confirmPassword'
+            fontSize='10pt'
+            _placeholder={{ color: 'gray.500' }}
+            _hover={{
+              bg: 'white',
+              border: '1px solid',
+              borderColor: 'blue.500',
+            }}
+            _focus={{
+              outline: 'none',
+              bg: 'white',
+              border: '1px solid',
+              borderColor: 'blue.500',
+            }}
+            bg='gray.50'
+            {...register('confirmPassword')}
+          />
+        </InputGroup>
+        <FormErrorMessage mb={2}>
+          {errors.confirmPassword && errors.confirmPassword.message?.toString()}
+        </FormErrorMessage>
+      </FormControl>
       <Button
         width='100%'
         height='36px'
@@ -108,22 +139,22 @@ const Login = ({}: LoginProps) => {
         type='submit'
         isLoading={isSubmitting}
       >
-        Se connecter
+        S'inscrire
       </Button>
       <Flex fontSize='9pt' justifyContent='center'>
-        <Text mr={1}>Première fois sur Reddit ?</Text>
+        <Text mr={1}>Déjà Redditor ?</Text>
         <Text
           color='blue.500'
           fontWeight='700'
           cursor='pointer'
           onClick={() =>
-            setAuthModalState((prev) => ({ ...prev, view: 'signup' }))
+            setAuthModalState((prev) => ({ ...prev, view: 'login' }))
           }
         >
-          S'inscrire
+          Se Connecter
         </Text>
       </Flex>
     </form>
   );
 };
-export default Login;
+export default SignUp;

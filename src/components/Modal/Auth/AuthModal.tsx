@@ -27,7 +27,7 @@ const AuthModal = () => {
       <Modal isOpen={modalState.open} onClose={handleClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
+          <ModalHeader textAlign='center'>
             {TitleModal[modalState.view as keyof typeof TitleModal]}
           </ModalHeader>
           <ModalCloseButton />
@@ -36,13 +36,13 @@ const AuthModal = () => {
             flexDirection='column'
             alignItems='center'
             justifyContent='center'
+            pb={6}
           >
             <Flex
               direction='column'
               align='center'
               justify='center'
               width='70%'
-              border='1px solid red'
             >
               {/* <OAuthButtons /> */}
               <AuthInputs />
