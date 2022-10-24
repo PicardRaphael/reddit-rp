@@ -10,13 +10,20 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
-import { authModalState } from '../../../atoms/authModalAtom';
+import { authModalState, ModalView } from '../../../atoms/authModalAtom';
+import { auth } from '../../../firebase/clientApp';
+import { FIREBASE_ERRORS } from '../../../firebase/errors';
 import { FormSignUpValues } from '../../../types/auth.types';
 import { signUpSchema } from '../../../utils/authSchema';
 
-const SignUp = () => {
+type SignUpProps = {
+  toggleView: (view: ModalView) => void;
+};
+
+const SignUp = ({ toggleView }: SignUpProps) => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const {
     handleSubmit,
@@ -26,8 +33,12 @@ const SignUp = () => {
     resolver: yupResolver(signUpSchema),
   });
 
+  const [createUserWithEmailAndPassword, user, loading, userError] =
+    useCreateUserWithEmailAndPassword(auth);
+
   const onSubmit: SubmitHandler<FormSignUpValues> = (values) => {
-    console.log(values);
+    console.log('ok');
+    createUserWithEmailAndPassword(values.email, values.password);
   };
 
   return (
@@ -63,6 +74,8 @@ const SignUp = () => {
         </InputGroup>
         <FormErrorMessage mb={2}>
           {errors.email && errors.email.message?.toString()}
+          {userError &&
+            FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
         </FormErrorMessage>
       </FormControl>
       <FormControl isInvalid={Boolean(errors.password)} mb={2}>
@@ -109,7 +122,7 @@ const SignUp = () => {
           <Input
             id='confirmPassword'
             placeholder='Confirmez le mot de passe'
-            type='confirmPassword'
+            type='password'
             fontSize='10pt'
             _placeholder={{ color: 'gray.500' }}
             _hover={{
@@ -147,9 +160,7 @@ const SignUp = () => {
           color='blue.500'
           fontWeight='700'
           cursor='pointer'
-          onClick={() =>
-            setAuthModalState((prev) => ({ ...prev, view: 'login' }))
-          }
+          onClick={() => toggleView('login')}
         >
           Se Connecter
         </Text>

@@ -10,26 +10,31 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
-import { authModalState } from '../../../atoms/authModalAtom';
+import { authModalState, ModalView } from '../../../atoms/authModalAtom';
+import { auth } from '../../../firebase/clientApp';
+import { FIREBASE_ERRORS } from '../../../firebase/errors';
 import { FormLoginValues } from '../../../types/auth.types';
 import { loginSchema } from '../../../utils/authSchema';
 
-type LoginProps = {};
+type LoginProps = { toggleView: (view: ModalView) => void };
 
-const Login = ({}: LoginProps) => {
+const Login = ({ toggleView }: LoginProps) => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormLoginValues>({
     resolver: yupResolver(loginSchema),
   });
 
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
   const onSubmit: SubmitHandler<FormLoginValues> = (values) => {
-    console.log(values);
+    signInWithEmailAndPassword(values.email, values.password);
   };
 
   return (
@@ -65,6 +70,8 @@ const Login = ({}: LoginProps) => {
         </InputGroup>
         <FormErrorMessage mb={2}>
           {errors.email && errors.email.message?.toString()}
+          {error &&
+            FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
         </FormErrorMessage>
       </FormControl>
       <FormControl isInvalid={Boolean(errors.password)} mb={2}>
@@ -100,25 +107,40 @@ const Login = ({}: LoginProps) => {
           {errors.password && errors.password.message?.toString()}
         </FormErrorMessage>
       </FormControl>
+      <Text textAlign='center' color='red.500' fontSize='10pt'>
+        {error &&
+          FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+      </Text>
       <Button
         width='100%'
         height='36px'
         mt={2}
         mb={2}
         type='submit'
-        isLoading={isSubmitting}
+        isLoading={loading}
       >
         Se connecter
       </Button>
+      <Flex justifyContent='center' mb={2}>
+        <Text fontSize='9pt' mr={1}>
+          Mot de passe oublié ?
+        </Text>
+        <Text
+          fontSize='9pt'
+          color='blue.500'
+          cursor='pointer'
+          onClick={() => toggleView('resetPassword')}
+        >
+          Réinitialiser
+        </Text>
+      </Flex>
       <Flex fontSize='9pt' justifyContent='center'>
         <Text mr={1}>Première fois sur Reddit ?</Text>
         <Text
           color='blue.500'
           fontWeight='700'
           cursor='pointer'
-          onClick={() =>
-            setAuthModalState((prev) => ({ ...prev, view: 'signup' }))
-          }
+          onClick={() => toggleView('signup')}
         >
           S'inscrire
         </Text>
