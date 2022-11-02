@@ -18,7 +18,7 @@ const CommentInput = ({
   onCreateComment,
 }: CommentInputProps) => {
   return (
-    <Flex direction='column' position='relative'>
+    <Flex direction='column'>
       {user ? (
         <>
           <Text mb={1}>
@@ -42,8 +42,6 @@ const CommentInput = ({
             }}
           />
           <Flex
-            position='absolute'
-            left='1px'
             right={0.1}
             bottom='1px'
             justify='flex-end'

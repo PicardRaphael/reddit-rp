@@ -215,7 +215,7 @@ const Comments = ({ user, selectedPost, community }: CommentsProps) => {
                 p={20}
               >
                 <Text fontWeight={700} opacity={0.3}>
-                  No Comments Yet
+                  Pas de commentaire
                 </Text>
               </Flex>
             )}
