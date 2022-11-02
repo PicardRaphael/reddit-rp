@@ -16,7 +16,6 @@ const OAuthButtons = () => {
         <Image alt='google' src='/images/googlelogo.png' height='20px' mr={4} />
         Continuer avec Google
       </Button>
-      {/* <Button variant='oauth'>Autre fournisseur</Button> */}
       {error && <Text>{error.message}</Text>}
     </Flex>
   );

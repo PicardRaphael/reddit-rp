@@ -16,9 +16,9 @@ import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsDot, BsReddit } from 'react-icons/bs';
 import { useSetRecoilState } from 'recoil';
-import { authModalState, ModalView } from '../../../atoms/authModalAtom';
+import { authModalState } from '../../../atoms/authModalAtom';
 import { auth } from '../../../firebase/clientApp';
-import { FormResetPasswordValues } from '../../../types/auth.types';
+import { FormResetPasswordValues, ModalView } from '../../../types/auth.types';
 import { resetPasswordSchema } from '../../../utils/authSchema';
 type ResetPasswordProps = {
   toggleView: (view: ModalView) => void;
