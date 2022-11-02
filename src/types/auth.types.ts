@@ -1,3 +1,10 @@
+export type ModalView = 'login' | 'signup' | 'resetPassword';
+
+export interface AuthModalState {
+  open: boolean;
+  view: ModalView;
+}
+
 export type FormLoginValues = {
   email: string;
   password: string;

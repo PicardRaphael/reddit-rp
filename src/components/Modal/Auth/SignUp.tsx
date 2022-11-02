@@ -12,11 +12,9 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
-import { authModalState, ModalView } from '../../../atoms/authModalAtom';
 import { auth } from '../../../firebase/clientApp';
 import { FIREBASE_ERRORS } from '../../../firebase/errors';
-import { FormSignUpValues } from '../../../types/auth.types';
+import { FormSignUpValues, ModalView } from '../../../types/auth.types';
 import { signUpSchema } from '../../../utils/authSchema';
 
 type SignUpProps = {
@@ -24,7 +22,6 @@ type SignUpProps = {
 };
 
 const SignUp = ({ toggleView }: SignUpProps) => {
-  const setAuthModalState = useSetRecoilState(authModalState);
   const {
     handleSubmit,
     register,
@@ -37,7 +34,6 @@ const SignUp = ({ toggleView }: SignUpProps) => {
     useCreateUserWithEmailAndPassword(auth);
 
   const onSubmit: SubmitHandler<FormSignUpValues> = (values) => {
-    console.log('ok');
     createUserWithEmailAndPassword(values.email, values.password);
   };
 

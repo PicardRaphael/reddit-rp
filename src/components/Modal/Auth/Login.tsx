@@ -12,17 +12,14 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
-import { authModalState, ModalView } from '../../../atoms/authModalAtom';
 import { auth } from '../../../firebase/clientApp';
 import { FIREBASE_ERRORS } from '../../../firebase/errors';
-import { FormLoginValues } from '../../../types/auth.types';
+import { FormLoginValues, ModalView } from '../../../types/auth.types';
 import { loginSchema } from '../../../utils/authSchema';
 
 type LoginProps = { toggleView: (view: ModalView) => void };
 
 const Login = ({ toggleView }: LoginProps) => {
-  const setAuthModalState = useSetRecoilState(authModalState);
   const {
     handleSubmit,
     register,
