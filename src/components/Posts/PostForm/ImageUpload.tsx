@@ -36,10 +36,7 @@ const ImageUpload = ({
         <>
           <Image alt='' src={selectedFile} maxWidth='400px' maxHeight='400px' />
           <Stack direction='row' mt={4}>
-            <Button
-              height='28px'
-              onClick={() => handleSelectedTab('Publication')}
-            >
+            <Button height='28px' onClick={() => handleSelectedTab('post')}>
               Retour à la publication
             </Button>
             <Button

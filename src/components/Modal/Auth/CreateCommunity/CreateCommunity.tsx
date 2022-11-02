@@ -92,7 +92,12 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
       mySnippets: [],
     }));
     handleClose();
-    router.push(`r/${name}`);
+
+    if (router.pathname.includes('/r')) {
+      router.push({ pathname: `${name}` });
+    } else {
+      router.push({ pathname: `r/${name}` });
+    }
     setLoading(false);
   };
 
